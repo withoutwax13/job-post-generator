@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/job-post-generator/static/js/main.cbb5de37.js",
+    "main.js": "/job-post-generator/static/js/main.7697adbe.js",
     "static/js/787.dca2f467.chunk.js": "/job-post-generator/static/js/787.dca2f467.chunk.js",
     "index.html": "/job-post-generator/index.html",
-    "main.cbb5de37.js.map": "/job-post-generator/static/js/main.cbb5de37.js.map",
+    "main.7697adbe.js.map": "/job-post-generator/static/js/main.7697adbe.js.map",
     "787.dca2f467.chunk.js.map": "/job-post-generator/static/js/787.dca2f467.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.cbb5de37.js"
+    "static/js/main.7697adbe.js"
   ]
 }
