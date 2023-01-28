@@ -1,10 +1,8 @@
 import { Grid, Typography, TextField, Button } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useState } from "react";
-import openai from "./config";
 
 function Main() {
-
     const [companyName, setCompanyName] = useState('')
     const [jobTitLe, setJobTitle] = useState('')
     const [companyLocation, setCompanyLocation] = useState('')
@@ -20,38 +18,49 @@ function Main() {
     const [generatedPost, setGeneratedPost] = useState('')
 
     const handleGenerate = () => {
-        openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: `
-                You are a creative and witty Human Resource staff and you will create a well-crafted, creative, and witty job post in less than or equal to 1000 characters. 
-                The job post must contain all these details below if possible. 
-                Make it professionally written and structured, don't copy paste it. And add a witty pun or joke related to the job position at the start.
-                Add "\n" for linebreaks.
-
-                    -	Name of Company: ${companyName}
-                    -	Job Title/Position: ${jobTitLe}
-                    -	Company Location: ${companyLocation}
-                    -	Hiring within a specific location or not: ${scope}
-                    -	Mandatory skills and years of experience with those skills: ${skills}
-                    -	Remote or on-site or hybrid: ${worksetup}
-                    -	Expected start date: ${startdate}
-                    -	Application deadline: ${deadline}
-                    -	Contact information: ${contact}
-                    -	Files needed for application (resume, cover letter, etc.): ${requireddocs}
-                    -	Company information: ${about}
-                    -	Diversity and Inclusion statement: Concise and clear but make it sound noble and highlight the company.
-
-                If there's no data beside the details above, just don't include it.
-            
-            `,
-            max_tokens: 500,
-            temperature: 0.9,
-        }).then(response=>{
-            setGeneratedPost(response.data.choices[0].text)
-        }).catch(err=>{
-            alert("Out of token. This is a free trial. Apologies.")
-        })
-    }
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + process.env.REACT_APP_OPEN_API_KEY
+            },
+            body: JSON.stringify({
+                model: "text-davinci-003",
+                prompt: `
+                    You are a creative and witty Human Resource staff and you will create a well-crafted, creative, and witty job post in less than or equal to 1000 characters. 
+                    The job post must contain all these details below if possible. 
+                    Make it professionally written and structured, don't copy paste it. And add a witty pun or joke related to the job position at the start.
+                    Add "\n" for linebreaks.
+    
+                        -	Name of Company: ${companyName}
+                        -	Job Title/Position: ${jobTitLe}
+                        -	Company Location: ${companyLocation}
+                        -	Hiring within a specific location or not: ${scope}
+                        -	Mandatory skills and years of experience with those skills: ${skills}
+                        -	Remote or on-site or hybrid: ${worksetup}
+                        -	Expected start date: ${startdate}
+                        -	Application deadline: ${deadline}
+                        -	Contact information: ${contact}
+                        -	Files needed for application (resume, cover letter, etc.): ${requireddocs}
+                        -	Company information: ${about}
+                        -	Diversity and Inclusion statement: Concise and clear but make it sound noble and highlight the company.
+    
+                    If there's no data beside the details above, just don't include it.
+                
+                `,
+                max_tokens: 1000,
+                temperature: 0.9,
+            })
+          };
+          fetch('https://api.openai.com/v1/completions', requestOptions)
+              .then(response => response.json())
+              .then(data => {
+                setGeneratedPost(data.choices[0].text)
+            }).catch(err => {
+                alert("Out of token. This is a free trial. Apologies.")
+                console.log(err)
+            });
+        }
     const handleClear = () => {
         setCompanyName('')
         setCompanyLocation('')
